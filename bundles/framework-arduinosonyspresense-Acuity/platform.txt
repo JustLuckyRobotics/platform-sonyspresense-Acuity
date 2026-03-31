@@ -1,0 +1,119 @@
+
+# Spresense platform
+# ------------------------------
+# For more info:
+# https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
+
+name=Spresense Boards
+version=1.0.0
+
+variant.path={runtime.platform.path}/variants/{build.variant}
+
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+compiler.path={runtime.tools.gcc-arm-none-eabi.path}/{runtime.os}/bin/
+compiler.sdk.path={build.kernel}
+compiler.cpreprocessor.flags= "-I{build.kernel}/nuttx/include/libcxx" "-I{build.kernel}/nuttx/include/newlib" "-I{build.kernel}/nuttx/include" "-I{build.kernel}/nuttx/arch" "-I{build.kernel}/nuttx/arch/chip" "-I{build.kernel}/sdk/include" "-I{build.kernel}/sdk/modules/include" "-I{build.kernel}/sdk/apps/include" "-I{build.kernel}/sdk/system/include" "-I{build.kernel}/sdk/externals/include" "-I{build.kernel}/sdk/externals/include/cmsis" "-I{variant.path}" {build.debug} -DCONFIG_WCHAR_BUILTIN -DCONFIG_HAVE_DOUBLE -D__NuttX__
+
+
+compiler.c.cmd=arm-none-eabi-gcc
+compiler.c.flags=-c {compiler.warning_flags} -MMD -std=gnu11 -c -fno-builtin -mabi=aapcs -Wall -Os -fno-strict-aliasing -fno-strength-reduce -fomit-frame-pointer -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -pipe -ggdb -gdwarf-3 -ffunction-sections -fdata-sections
+
+compiler.S.cmd=arm-none-eabi-gcc
+compiler.S.flags=-c {compiler.warning_flags} -MMD -std=gnu99 -c -fno-builtin -mabi=aapcs -Wall -Os -fno-strict-aliasing -fno-strength-reduce -fomit-frame-pointer -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -pipe -ggdb -gdwarf-3 -D__ASSEMBLY__ -x assembler-with-cpp
+
+compiler.c.elf.flags=-ggdb -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Xlinker --entry=__start -nodefaultlibs -nostartfiles "{build.stack}" "{build.ldscript}" -Wl,--gc-sections
+
+compiler.c.elf.cmd=arm-none-eabi-g++
+compiler.c.elf.libs= {build.libs} -lgcc -lm -lsupc++_nano
+
+compiler.cpp.cmd=arm-none-eabi-g++
+compiler.cpp.flags=-c {compiler.warning_flags} -MMD -std=gnu++11 -c -fno-builtin -mabi=aapcs -Wall -Os -fno-strict-aliasing -fno-strength-reduce -fomit-frame-pointer -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -pipe -ffunction-sections -fno-exceptions -fno-rtti -ggdb -gdwarf-3 -ffunction-sections -fdata-sections -fpermissive
+
+
+compiler.as.cmd=arm-none-eabi-as
+compiler.ar.cmd=arm-none-eabi-ar
+compiler.ar.flags=rcs
+
+compiler.elf2hex.cmd=
+compiler.elf2hex.flags=
+
+compiler.size.cmd=arm-none-eabi-size
+
+compiler.ldflags=
+compiler.libraries.ldflags=
+
+# This can be overriden in boards.txt
+build.extra_flags=
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=
+compiler.c.elf.extra_flags=
+compiler.S.extra_flags=
+compiler.cpp.extra_flags=
+compiler.ar.extra_flags=
+compiler.objcopy.eep.extra_flags=
+compiler.elf2hex.extra_flags=
+
+## generate file with git version number
+## needs bash, git, and echo
+
+## windows-compatible version may be added later
+
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.cpreprocessor.flags} {compiler.c.flags} -DF_CPU={build.f_cpu}  -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} -DARDUINO_BOARD="{build.board}" {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpreprocessor.flags} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} -DARDUINO_BOARD="{build.board}" {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.cpreprocessor.flags} {compiler.S.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} -DARDUINO_BOARD="{build.board}" {compiler.S.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+# archive_file_path is needed for backwards compatibility with IDE 1.6.5 or older, IDE 1.6.6 or newer overrides this value
+archive_file_path={build.path}/{archive_file}
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
+
+## Combine gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -Xlinker "-Map={build.path}/output.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} -u spresense_main "{build.path}/{archive_file}" {compiler.c.elf.libs} {compiler.ldflags} {compiler.libraries.ldflags} -Wl,--end-group "-L{build.path}"
+
+## Create hex
+recipe.objcopy.hex.pattern="{runtime.tools.spresense-tools.path}/mkspk/{runtime.os}/mkspk" -c 2 "{build.path}/{build.project_name}.elf" "{build.flash_name}" "{build.path}/{build.project_name}.spk"
+recipe.objcopy.hex.pattern.windows="{runtime.tools.spresense-tools.path}/mkspk/{runtime.os}/mkspk.exe" -c 2 "{build.path}/{build.project_name}.elf" "{build.flash_name}" "{build.path}/{build.project_name}.spk"
+
+## Save hex
+recipe.output.tmp_file={build.project_name}.spk
+recipe.output.save_file={build.project_name}.{build.variant}.{build.type}.{build.flash_name}.spk
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=^(\.text|\.data|\.init_section|\.ARM.exidx|\.bss)\s+([0-9]+).*
+recipe.size.regex.data=^(\.text|\.data|\.init_section|\.ARM.exidx|\.bss)\s+([0-9]+).*
+
+## Compute RAM size
+recipe.hooks.objcopy.postobjcopy.1.pattern="{runtime.tools.spresense-tools.path}/getspkinfo/{runtime.os}/getspkinfo" "{build.path}/{build.project_name}.spk"
+recipe.hooks.objcopy.postobjcopy.1.pattern.windows="{runtime.tools.spresense-tools.path}/getspkinfo/{runtime.os}/getspkinfo.exe" "{build.path}/{build.project_name}.spk"
+
+# ------------------------------
+tools.spresense-tools.path={runtime.tools.spresense-tools.path}
+tools.spresense-tools.cmd.path={path}/flash_writer/{runtime.os}/flash_writer
+tools.spresense-tools.cmd.path.windows={path}/flash_writer/{runtime.os}/flash_writer.exe
+tools.spresense-tools.cmd.opt.baudrate={upload.speed}
+tools.spresense-tools.pycmd=python3.4m.exe
+tools.spresense-tools.upload.protocol=spresense
+tools.spresense-tools.upload.params.verbose=
+tools.spresense-tools.upload.params.quiet=
+tools.spresense-tools.upload.pattern="{cmd.path}" -s -c "{serial.port}" {cmd.opt.baudrate} -d -n "{build.path}/{build.project_name}.spk"
+tools.spresense-tools.erase.opt.args=-e "{menu.Core.Sub1.build.flash_name}" -e "{menu.Core.Sub2.build.flash_name}" -e "{menu.Core.Sub3.build.flash_name}" -e "{menu.Core.Sub4.build.flash_name}" -e "{menu.Core.Sub5.build.flash_name}"
+tools.spresense-tools.erase.params.verbose=
+tools.spresense-tools.erase.params.quiet=
+tools.spresense-tools.erase.pattern="{cmd.path}" -s -c "{serial.port}" {cmd.opt.baudrate} -d -n {erase.opt.args}
+tools.spresense-tools.bootloader.params.verbose=
+tools.spresense-tools.bootloader.params.quiet=
+tools.spresense-tools.firmware.path={runtime.tools.spresense-sdk.path}/spresense/firmware
+tools.spresense-tools.bootloader.pattern="{cmd.path}" -s -c "{serial.port}" {cmd.opt.baudrate} -d -n "{firmware.path}/loader.espk" "{firmware.path}/gnssfw.espk" "{firmware.path}/dnnrt-mp.espk" "{firmware.path}/AESM.espk" "{firmware.path}/sysutil.spk" "{firmware.path}/mp3dec.spk"

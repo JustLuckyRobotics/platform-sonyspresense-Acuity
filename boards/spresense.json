@@ -1,0 +1,47 @@
+{
+  "build": {
+    "core": "spresense",
+    "cpu": "cortex-m4",
+    "extra_flags": "-DPLATFORMIO_SPRESENSE_ACUITY",
+    "f_cpu": "156000000L",
+    "mcu": "CXD5602GG",
+    "hwids": [
+      [
+        "0x10C4",
+        "0xEA60"
+      ]
+    ],
+    "variant": "spresense",
+    "ldscript": "ramconfig.ld"
+  },
+  "debug": {
+    "openocd_target": "cxd5602",
+    "svd_path": "cxd5602.svd",
+    "default_tools": [
+      "stlink"
+    ]
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "name": "SPRESENSE-Acuity (compatibility alias)",
+  "upload": {
+    "disable_flushing": false,
+    "maximum_ram_size": 786432,
+    "maximum_size": 786432,
+    "protocol": "serial",
+    "protocols": [
+      "jlink",
+      "cmsis-dap",
+      "blackmagic",
+      "serial"
+    ],
+    "speed": 115200,
+    "resetmethod": "ck",
+    "require_upload_port": true,
+    "use_1200bps_touch": false,
+    "wait_for_upload_port": false
+  },
+  "url": "https://www.sony-semicon.com/en/products/spresense/index.html",
+  "vendor": "Sony"
+}

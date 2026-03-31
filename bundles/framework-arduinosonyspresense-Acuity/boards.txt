@@ -1,0 +1,154 @@
+menu.Debug=Debug
+menu.Core=Core
+menu.Memory=Memory
+menu.UploadSpeed=UploadSpeed
+
+############## Spresense BOARD ##############
+spresense.name=Spresense
+
+spresense.vid.0=0x10C4
+spresense.pid.0=0xEA60
+
+spresense.upload.tool=spresense-tools
+spresense.upload.speed=115200
+spresense.upload.resetmethod=ck
+spresense.upload.maximum_size=786432
+spresense.upload.maximum_data_size=786432
+spresense.upload.wait_for_upload_port=true
+spresense.serial.disableDTR=false
+spresense.serial.disableRTS=true
+
+spresense.bootloader.tool=spresense-tools
+
+spresense.build.mcu=spresense
+spresense.build.f_cpu=156000000L
+spresense.build.board=spresense_ast
+spresense.build.core=spresense
+
+spresense.menu.Core.Main=MainCore
+spresense.menu.Core.Sub1=SubCore 1
+spresense.menu.Core.Sub2=SubCore 2
+spresense.menu.Core.Sub3=SubCore 3
+spresense.menu.Core.Sub4=SubCore 4
+spresense.menu.Core.Sub5=SubCore 5
+
+spresense.menu.Core.Sub1.index=1
+spresense.menu.Core.Sub2.index=2
+spresense.menu.Core.Sub3.index=3
+spresense.menu.Core.Sub4.index=4
+spresense.menu.Core.Sub5.index=5
+
+spresense.menu.Core.Main.build.flash_name=nuttx
+spresense.menu.Core.Sub1.build.flash_name=sub1
+spresense.menu.Core.Sub2.build.flash_name=sub2
+spresense.menu.Core.Sub3.build.flash_name=sub3
+spresense.menu.Core.Sub4.build.flash_name=sub4
+spresense.menu.Core.Sub5.build.flash_name=sub5
+
+spresense.menu.Memory.768= 768 KB (Default)
+spresense.menu.Memory.128= 128 KB
+spresense.menu.Memory.256= 256 KB
+spresense.menu.Memory.384= 384 KB
+spresense.menu.Memory.512= 512 KB
+spresense.menu.Memory.640= 640 KB
+spresense.menu.Memory.896= 896 KB
+spresense.menu.Memory.1024=1024 KB
+spresense.menu.Memory.1152=1152 KB
+spresense.menu.Memory.1280=1280 KB
+spresense.menu.Memory.1408=1408 KB
+spresense.menu.Memory.1536=1536 KB
+
+spresense.menu.Memory.128.upload.maximum_size=131072
+spresense.menu.Memory.256.upload.maximum_size=262144
+spresense.menu.Memory.384.upload.maximum_size=393216
+spresense.menu.Memory.512.upload.maximum_size=524288
+spresense.menu.Memory.640.upload.maximum_size=655360
+spresense.menu.Memory.768.upload.maximum_size=786432
+spresense.menu.Memory.896.upload.maximum_size=917504
+spresense.menu.Memory.1024.upload.maximum_size=1048576
+spresense.menu.Memory.1152.upload.maximum_size=1179648
+spresense.menu.Memory.1280.upload.maximum_size=1310720
+spresense.menu.Memory.1408.upload.maximum_size=1441792
+spresense.menu.Memory.1536.upload.maximum_size=1572864
+
+spresense.menu.Memory.128.upload.maximum_data_size=131072
+spresense.menu.Memory.256.upload.maximum_data_size=262144
+spresense.menu.Memory.384.upload.maximum_data_size=393216
+spresense.menu.Memory.512.upload.maximum_data_size=524288
+spresense.menu.Memory.640.upload.maximum_data_size=655360
+spresense.menu.Memory.768.upload.maximum_data_size=786432
+spresense.menu.Memory.896.upload.maximum_data_size=917504
+spresense.menu.Memory.1024.upload.maximum_data_size=1048576
+spresense.menu.Memory.1152.upload.maximum_data_size=1179648
+spresense.menu.Memory.1280.upload.maximum_data_size=1310720
+spresense.menu.Memory.1408.upload.maximum_data_size=1441792
+spresense.menu.Memory.1536.upload.maximum_data_size=1572864
+
+spresense.menu.Core.Main.build.extra_flags=
+spresense.menu.Core.Sub1.build.extra_flags=-DSUBCORE=1
+spresense.menu.Core.Sub2.build.extra_flags=-DSUBCORE=2
+spresense.menu.Core.Sub3.build.extra_flags=-DSUBCORE=3
+spresense.menu.Core.Sub4.build.extra_flags=-DSUBCORE=4
+spresense.menu.Core.Sub5.build.extra_flags=-DSUBCORE=5
+
+spresense.menu.Core.Main.build.type_prefix=
+spresense.menu.Core.Sub1.build.type_prefix=subcore-
+spresense.menu.Core.Sub2.build.type_prefix=subcore-
+spresense.menu.Core.Sub3.build.type_prefix=subcore-
+spresense.menu.Core.Sub4.build.type_prefix=subcore-
+spresense.menu.Core.Sub5.build.type_prefix=subcore-
+
+spresense.menu.Core.Main.build.variant=spresense
+spresense.menu.Core.Sub1.build.variant=spresense_sub
+spresense.menu.Core.Sub2.build.variant=spresense_sub
+spresense.menu.Core.Sub3.build.variant=spresense_sub
+spresense.menu.Core.Sub4.build.variant=spresense_sub
+spresense.menu.Core.Sub5.build.variant=spresense_sub
+
+spresense.menu.Core.Main.build.stack=-Wl,--defsym,__reserved_ramsize=1572864-{upload.maximum_size}
+spresense.menu.Core.Sub1.build.stack=
+spresense.menu.Core.Sub2.build.stack=
+spresense.menu.Core.Sub3.build.stack=
+spresense.menu.Core.Sub4.build.stack=
+spresense.menu.Core.Sub5.build.stack=
+
+spresense.menu.Core.Main.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libaudio.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libnet.a" "{build.libpath}/libnnablart.a" "{build.libpath}/libsched.a" "{build.libpath}/libsslutils.a" "{build.libpath}/libxx.a" "{build.libpath}/libmossfw.a" "{build.libpath}/libnrf52.a" "{build.libpath}/libuecc.a"
+spresense.menu.Core.Sub1.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libsched.a" "{build.libpath}/libxx.a"
+spresense.menu.Core.Sub2.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libsched.a" "{build.libpath}/libxx.a"
+spresense.menu.Core.Sub3.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libsched.a" "{build.libpath}/libxx.a"
+spresense.menu.Core.Sub4.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libsched.a" "{build.libpath}/libxx.a"
+spresense.menu.Core.Sub5.build.libs="{build.libpath}/libapps.a" "{build.libpath}/libarch.a" "{build.libpath}/libarm_cortexM4lf_math.a" "{build.libpath}/libbinfmt.a" "{build.libpath}/libboard.a" "{build.libpath}/libboards.a" "{build.libpath}/libc.a" "{build.libpath}/libcmsis_nn.a" "{build.libpath}/libdrivers.a" "{build.libpath}/libfs.a" "{build.libpath}/libmm.a" "{build.libpath}/libsched.a" "{build.libpath}/libxx.a"
+
+### without SYSBUS
+spresense.build.ldscript=-T{variant.path}/ramconfig.ld
+### with SYSBUS
+#spresense.build.ldscript=-T{variant.path}/ramconfig-new.ld
+spresense.build.root={runtime.tools.spresense-sdk.path}/spresense
+spresense.build.kernel={build.root}/{build.type}
+spresense.build.libpath={build.kernel}/nuttx/libs
+
+spresense.menu.Debug.Disabled=Disabled
+spresense.menu.Debug.Disabled.build.debug=
+spresense.menu.Debug.Disabled.build.type={build.type_prefix}release
+
+spresense.menu.Debug.Enabled=Enabled
+spresense.menu.Debug.Enabled.build.debug=-DBRD_DEBUG
+spresense.menu.Debug.Enabled.build.type={build.type_prefix}debug
+
+spresense.menu.UploadSpeed.115200=115200
+spresense.menu.UploadSpeed.115200.upload.speed=
+spresense.menu.UploadSpeed.230400=230400
+spresense.menu.UploadSpeed.230400.upload.speed=-b 230400
+spresense.menu.UploadSpeed.460800=460800
+spresense.menu.UploadSpeed.460800.upload.speed=-b 460800
+spresense.menu.UploadSpeed.500000=500000
+spresense.menu.UploadSpeed.500000.upload.speed=-b 500000
+spresense.menu.UploadSpeed.576000=576000
+spresense.menu.UploadSpeed.576000.upload.speed=-b 576000
+spresense.menu.UploadSpeed.921600=921600
+spresense.menu.UploadSpeed.921600.upload.speed=-b 921600
+spresense.menu.UploadSpeed.1000000=1000000
+spresense.menu.UploadSpeed.1000000.upload.speed=-b 1000000
+spresense.menu.UploadSpeed.1152000=1152000
+spresense.menu.UploadSpeed.1152000.upload.speed=-b 1152000
+
